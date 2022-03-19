@@ -25,49 +25,49 @@ function playRound(playerSelection, computerSelection)
     {
         computerScore.textContent = ++computerPoints;
         playerScore.textContent = ++playerPoints;
-        roundResults.textContent = `"${playerSelection} vs ${computerSelection} is a Tie!`;
+        roundResults.textContent = `${playerSelection} vs ${computerSelection} is a Tie!`;
     }
 
     else
     {
        switch (playerSelection)
        {
-            case "#rock":
+            case "Rock":
                 if (computerSelection === "Paper")
                 {
                     computerScore.textContent = ++computerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you lost the round!`;
                 }
                 else if (computerSelection === "Scissors")
                 {
                     playerScore.textContent = ++playerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you won the round!`;
                 }
                break;
 
-            case "#paper":
+            case "Paper":
                 if (computerSelection === "Rock")
                 {
                     playerScore.textContent = ++playerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you won the round!`;
                 }
                 else if (computerSelection === "Scissors")
                 {
                     computerScore.textContent = ++computerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you lost the round!`;
                 }
                 break;
 
-            case "#scissors":
+            case "Scissors":
                 if (computerSelection === "Paper")
                 {
                     playerScore.textContent = ++playerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you won the round!`;
                 }
                 else if (computerSelection === "Rock")
                 {
                     computerScore.textContent = ++computerPoints;
-                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                    roundResults.textContent = `${playerSelection} vs ${computerSelection}, you lost the round!`;
                 }
                 break;
             default:
@@ -77,6 +77,9 @@ function playRound(playerSelection, computerSelection)
     }
 
     checkWinner();
+
+console.log(playerSelection)
+console.log(computerSelection)
 }
 
 const resultOutput =
@@ -90,22 +93,35 @@ function checkWinner()
 {
     if (playerPoints === 5 || computerPoints === 5)
     {
-        switch (playerPoints)
+        if (playerPoints === computerPoints)
         {
-            case playerPoints === computerPoints:
-                updateWinner("tie");
-                break;
-            case playerPoints > computerPoints:
-                updateWinner("win");
-                break;
-            case playerPoints < computerPoints:
-                updateWinner("loss");
-                break;
-            default:
-                "Error!"
-                break;
+            updateWinner("tie");
         }
+        else if (playerPoints > computerPoints)
+        {
+            updateWinner("win");
+        }
+        else
+        {
+            updateWinner("loss");
+        }                                                                      /*switch (playerPoints)
+                                                                                {
+                                                                                    case playerPoints === computerPoints: //Fixa här
+                                                                                        updateWinner('tie');
+                                                                                        break;
+                                                                                    case playerPoints > computerPoints:
+                                                                                        updateWinner('win');
+                                                                                        break;
+                                                                                    case playerPoints < computerPoints:
+                                                                                        updateWinner('loss');
+                                                                                        break;
+                                                                                    default:
+                                                                                        "Error!"
+                                                                                        break;*/
+    
     }
+    console.log(playerPoints)
+    console.log(computerPoints);
 }
 
 function updateWinner(winner)
@@ -113,7 +129,7 @@ function updateWinner(winner)
     roundResults.textContent = resultOutput[winner][0];
     roundResults.style.color = resultOutput[winner][1];
 
-    optionBtn.forEach(button => {
+    options.forEach(button => {
         button.removeEventListener('click', getPlayerChoice);
       });
 }
@@ -122,7 +138,6 @@ function getPlayerChoice(e)
 {
     let playerSelection = (e.target.id);
     playerChoice = e.target.textContent;
-    playRound(playerSelection, computerPlay());
+    playRound(playerChoice, computerPlay());
 }
-
 
