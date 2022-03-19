@@ -1,87 +1,128 @@
-let userScore = 0;
-let computerScore = 0;
+const options = document.querySelectorAll(".options button");
+const playerScore = document.querySelector("#playerScore");
+const computerScore = document.querySelector("#computerScore");
+const playAgain = document.querySelector("#playAgain");
+const roundResults = document.querySelector("#roundResults");
 
-let userChoice = prompt("rock, paper or scissors?").toLowerCase();
-let computerOptions = ["rock", "paper", "scissors"];
-let choiceNumber = Math.floor(Math.random()*3);
-let computerChoice = computerOptions[choiceNumber];
+playAgain.addEventListener("click", () => location.reload());
 
-function playRound(userChoice, computerChoice)
-{
-    const currentRound = `${userChoice} vs ${computerChoice}`;
+options.forEach(button => {button.addEventListener("click", getPlayerChoice)});
 
-    if(userChoice === computerChoice)
-    {
-        alert(`${currentRound} is a tie`);
-        return;
-    }
+let playerChoice;
+let playerPoints = 0;
+let computerPoints = 0;
+let computerOptions = ["Rock", "Paper", "Scissors"];
 
-    if(userChoice === "rock")
-    {
-        if(computerChoice === "scissors")
-        {
-            alert(`${currentRound} = you win!`);
-            userScore++;
-        }
-        else if(computerChoice === "paper")
-        {
-            alert(`${currentRound} = you lose!`);
-            computerScore++;
-        }
-    }
-    if(userChoice === "paper")
-    {
-        if(computerChoice === "scissors")
-        {
-            alert(`${currentRound} = you lose!`);
-            computerScore++;
-        }
-        else if (computerChoice === "rock")
-        {
-            alert(`${currentRound} = you win!`);
-            userScore++;
-        }
-    }
-    if(userChoice === "scissors")
-    {
-        if(computerChoice === "rock")
-        {
-            alert(`${currentRound} = you lose!`)
-            computerScore++;
-        }
-        else if (computerChoice === "paper")
-        {
-            alert(`${currentRound} = you win!`)
-            userScore++;
-        }
-    }
-
+function computerPlay()
+{    
+    let computerChoice = computerOptions[Math.floor(Math.random()*3)];
+    return computerChoice;
 }
 
-function game()
+function playRound(playerSelection, computerSelection)
 {
-    for(let i = 0; i <= 4; i++)
+    if (playerSelection === computerSelection)
     {
-        playRound(userChoice, computerChoice);
-        console.log(userChoice);
-        console.log(computerChoice);
-        console.log(userScore);
-        console.log(computerScore);       
-        userChoice = prompt("rock, paper or scissors?").toLowerCase();
+        computerScore.textContent = ++computerPoints;
+        playerScore.textContent = ++playerPoints;
+        roundResults.textContent = `"${playerSelection} vs ${computerSelection} is a Tie!`;
     }
-    if(computerScore === userScore)
-    {
-        alert("The game is a tie!")
-    }
-    else if(computerScore < userScore)
-    {
-        alert("You won the game!")
-    }
+
     else
     {
-        alert("You lost the game!")
+       switch (playerSelection)
+       {
+            case "#rock":
+                if (computerSelection === "Paper")
+                {
+                    computerScore.textContent = ++computerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                }
+                else if (computerSelection === "Scissors")
+                {
+                    playerScore.textContent = ++playerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                }
+               break;
+
+            case "#paper":
+                if (computerSelection === "Rock")
+                {
+                    playerScore.textContent = ++playerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                }
+                else if (computerSelection === "Scissors")
+                {
+                    computerScore.textContent = ++computerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                }
+                break;
+
+            case "#scissors":
+                if (computerSelection === "Paper")
+                {
+                    playerScore.textContent = ++playerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Win!`;
+                }
+                else if (computerSelection === "Rock")
+                {
+                    computerScore.textContent = ++computerPoints;
+                    roundResults.textContent = `"${playerSelection} vs ${computerSelection}, you Lose!`;
+                }
+                break;
+            default:
+                "Error!"
+                break;
+       }
+    }
+
+    checkWinner();
+}
+
+const resultOutput =
+{
+    win: ["You win the game! Well done!", "green"],
+    loss: ["You lost the game! Better luck next time.", "red"],
+    tie: ["The game is a Tie! You live to win another day.", "yellow"]
+}
+
+function checkWinner()
+{
+    if (playerPoints === 5 || computerPoints === 5)
+    {
+        switch (playerPoints)
+        {
+            case playerPoints === computerPoints:
+                updateWinner("tie");
+                break;
+            case playerPoints > computerPoints:
+                updateWinner("win");
+                break;
+            case playerPoints < computerPoints:
+                updateWinner("loss");
+                break;
+            default:
+                "Error!"
+                break;
+        }
     }
 }
 
-game();
+function updateWinner(winner)
+{
+    roundResults.textContent = resultOutput[winner][0];
+    roundResults.style.color = resultOutput[winner][1];
+
+    optionBtn.forEach(button => {
+        button.removeEventListener('click', getPlayerChoice);
+      });
+}
+
+function getPlayerChoice(e)
+{
+    let playerSelection = (e.target.id);
+    playerChoice = e.target.textContent;
+    playRound(playerSelection, computerPlay());
+}
+
 
