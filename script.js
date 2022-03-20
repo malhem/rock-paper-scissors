@@ -77,9 +77,6 @@ function playRound(playerSelection, computerSelection)
     }
 
     checkWinner();
-
-console.log(playerSelection)
-console.log(computerSelection)
 }
 
 const resultOutput =
@@ -104,24 +101,8 @@ function checkWinner()
         else
         {
             updateWinner("loss");
-        }                                                                      /*switch (playerPoints)
-                                                                                {
-                                                                                    case playerPoints === computerPoints: //Fixa här
-                                                                                        updateWinner('tie');
-                                                                                        break;
-                                                                                    case playerPoints > computerPoints:
-                                                                                        updateWinner('win');
-                                                                                        break;
-                                                                                    case playerPoints < computerPoints:
-                                                                                        updateWinner('loss');
-                                                                                        break;
-                                                                                    default:
-                                                                                        "Error!"
-                                                                                        break;*/
-    
+        }                                                  
     }
-    console.log(playerPoints)
-    console.log(computerPoints);
 }
 
 function updateWinner(winner)
